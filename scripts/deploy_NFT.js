@@ -6,9 +6,9 @@ const utils = ethers.utils;
 
 // comandline: npx hardhat run scripts/deploy_NFT.js --network sepolia
 
-const nftFilePath = "./deployment/HeroNFT.json";
-const TokenFilePath = "./deployment/HeroToken.json";
-const HeroMarketPlaceFilePath = "./deployment/HeroMarketPlace.json";
+const nftFilePath = "./deployment/SplittingNFT.json";
+const TokenFilePath = "./deployment/SplittingToken.json";
+const SplittingMarketPlaceFilePath = "./deployment/SplittingMarketPlace.json";
 const HeroItemFilePath = "./deployment/HeroItem.json";
 require("dotenv").config();
 
@@ -19,24 +19,24 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   // // deploy Token
-  // const Token = await ethers.getContractFactory("HeroToken");
+  // const Token = await ethers.getContractFactory("SplittingToken");
   // const token = await Token.deploy();
   // await token.deployed();
   // console.log("Token address:", token.address);
   // console.log("Token total supply:", (await token.totalSupply()).toString());
   // const TokenData = {
-  //   HeroTokenAddress: token.address,
+  //   SplittingTokenAddress: token.address,
   // };
   // const TokenJsonData = JSON.stringify(TokenData, null, 2);
   // fs.writeFileSync(TokenFilePath, TokenJsonData);
 
   // deploy NFT
-  const NFT = await ethers.getContractFactory("HeroNFT");
+  const NFT = await ethers.getContractFactory("SplittingNFT");
   const nft = await NFT.deploy();
   await nft.deployed();
   console.log("NFT address: ", nft.address);
   const nftData = {
-    HeroNFTAddress: nft.address,
+    SplittingNFTAddress: nft.address,
   };
   const nftJsonData = JSON.stringify(nftData, null, 2);
   fs.writeFileSync(nftFilePath, nftJsonData);
@@ -55,9 +55,9 @@ async function main() {
   // // deploy NFTMarketplace
 
   // const Wibu_NFTMarketplace = await ethers.getContractFactory(
-  //   "HeroMarketPlace"
+  //   "SplittingMarketPlace"
   // );
-  // const HeroMarketPlace = await Wibu_NFTMarketplace.deploy(
+  // const SplittingMarketPlace = await Wibu_NFTMarketplace.deploy(
   //   token.address,
   //   nft.address,
   //   heroItem.address
@@ -65,13 +65,13 @@ async function main() {
   // console.log("NFTAddress: ", nft.address);
   // console.log("tokenAddress: ", token.address);
   // console.log("heroItemAddress: ", heroItem.address);
-  // await HeroMarketPlace.deployed();
-  // console.log("HeroMarketPlace address: ", HeroMarketPlace.address);
-  // const HeroMarketPlaceData = {
-  //   HeroMarketPlaceAddress: HeroMarketPlace.address,
+  // await SplittingMarketPlace.deployed();
+  // console.log("SplittingMarketPlace address: ", SplittingMarketPlace.address);
+  // const SplittingMarketPlaceData = {
+  //   SplittingMarketPlaceAddress: SplittingMarketPlace.address,
   // };
-  // const HeroMarketPlaceJsonData = JSON.stringify(HeroMarketPlaceData, null, 2);
-  // fs.writeFileSync(HeroMarketPlaceFilePath, HeroMarketPlaceJsonData);
+  // const SplittingMarketPlaceJsonData = JSON.stringify(SplittingMarketPlaceData, null, 2);
+  // fs.writeFileSync(SplittingMarketPlaceFilePath, SplittingMarketPlaceJsonData);
 
   console.log("Deployment completed. Data saved to respective JSON files.");
 }
