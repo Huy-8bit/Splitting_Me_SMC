@@ -6,12 +6,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract SplittingToken is ERC20("Hero Token", "HRT"), Ownable {
+contract SplittingToken is ERC20("Hero Token", "RWA"), Ownable {
     uint256 private cap = 100_000_000_000 * 10 ** 18;
 
-    constructor() public {
+    constructor() {
         _mint(msg.sender, cap);
-        transferOwnership(msg.sender);
+        // transferOwnership(msg.sender);
     }
 
     function mint(address _to, uint256 _amount) public onlyOwner {
@@ -20,12 +20,5 @@ contract SplittingToken is ERC20("Hero Token", "HRT"), Ownable {
             "SplittingToken: cap exceeded"
         );
         _mint(_to, _amount);
-    }
-
-    function transfer(
-        address _to,
-        uint256 _amount
-    ) public override returns (bool) {
-        return super.transfer(_to, _amount);
     }
 }

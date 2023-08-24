@@ -5,7 +5,7 @@ require("chai");
 require("ethers");
 require("ethereum-waffle");
 require("dotenv").config();
-
+require("@nomicfoundation/hardhat-verify");
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 
 module.exports = {
@@ -15,6 +15,15 @@ module.exports = {
       url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       accounts: [process.env.REAL_ACCOUNTS],
     },
+    goerli: {
+      url: "https://eth-goerli.g.alchemy.com/v2/GeMVzoOnF9s91czx6zYdUA6mAjA39Q46",
+      accounts: [process.env.REAL_ACCOUNTS],
+    },
+  },
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: "TRD75UM176G352ITIMFI6AA5K8RKAQ9WCB",
   },
   solidity: {
     compilers: [
