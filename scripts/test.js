@@ -9,58 +9,42 @@ require("dotenv").config();
 // const { WETH } = require("@uniswap/v2-periphery");
 // comandline: npx hardhat test scripts/test.js --network sepolia
 
-const TokenFilePath = "./deployment/SplittingToken.json";
-const TokenSaleFilePath = "./deployment/TokenSale.json";
-
+const TokenFilePath = "./deployment/Token.json";
 const tokenData = fs.readFileSync(TokenFilePath);
 const tokenJSON = JSON.parse(tokenData);
 const tokenAddress = tokenJSON.address;
 
-const tokenSaleData = fs.readFileSync(TokenSaleFilePath);
-const tokenSaleJSON = JSON.parse(tokenSaleData);
-const tokenSaleAddress = tokenSaleJSON.address;
-
-const addres_recipient = "0xFd883589837bEEFf3dFdB97A821E0c71FF9BA20A";
+const addres_recipient = "0xf30607e0cdEc7188d50d2bb384073bF1D5b02fA4";
 
 describe("Splitting Me", function () {
   beforeEach(async function () {
-    const SplittingToken = await ethers.getContractFactory("SplittingToken");
-    splittingToken = await SplittingToken.attach(tokenAddress);
-
-    const TokenSale = await ethers.getContractFactory("TokenSale");
-    tokenSale = await TokenSale.attach(tokenSaleAddress);
+    const Token = await ethers.getContractFactory("PornHub");
+    token = await Token.attach(tokenAddress);
 
     [owner] = await ethers.getSigners();
     console.log("owner: ", owner.address);
-    console.log("SplittingToken: ", splittingToken.address);
-    console.log("TokenSale: ", tokenSale.address);
+    console.log("token: ", token.address);
   });
 
   describe("Token", function () {
-    // it("should buyPackage", async function () {
-    //   const price = await tokenSale.getPrice("Basic");
-    //   console.log("price: ", price.toString());
-
-    //   _value = price.toString();
-    //   const result = await tokenSale.buyPackage("Basic", {
-    //     value: _value,
-    //   });
-    //   console.log("result: ", result);
-    // });
-
-    it("should buyPackage", async function () {
-      const price = await tokenSale.getPrice("Bronze");
-      console.log("price: ", price.toString());
-
-      _value = price.toString();
-      const result = await tokenSale.buyPackageWithReferral(
-        "Bronze",
-        "0x469f72990944a8b60664A2e5185635b266E826b0",
-        {
-          value: _value,
-        }
-      );
+    it("should addBots", async function () {
+      const result = await token.delBots([
+        "0x0749a37209317bCBA0ebf0C26d70ad62990119DF",
+      ]);
       console.log("result: ", result);
     });
+    // it("should delBots", async function () {
+    //   const result = await token.delBots([
+    //     "0x0749a37209317bCBA0ebf0C26d70ad62990119DF",
+    //   ]);
+    //   console.log("result: ", result);
+    // });
   });
 });
+
+// it("should transfer token", async function () {
+//   const amount = 100;
+//   const amountWei = utils.parseEther(amount.toString());
+//   const result = await token.transfer(addres_recipient, amountWei);
+//   console.log("result: ", result);
+// });
