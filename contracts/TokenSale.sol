@@ -11,7 +11,6 @@ contract TokenSale is Ownable {
     struct Package {
         uint256 price;
         uint256 tokens;
-        uint256 commissionPercentage;
     }
 
     mapping(string => Package) public packages;
@@ -20,56 +19,46 @@ contract TokenSale is Ownable {
 
     constructor(address _tokenAddress) {
         token = IERC20(_tokenAddress);
-
-        packages["Basic"] = Package(0.001 ether, 10000 * 10 ** 18, 1);
-        packages["Bronze"] = Package(0.01 ether, 100000 * 10 ** 18, 10);
-        packages["Silver"] = Package(0.02 ether, 200000 * 10 ** 18, 20);
-        packages["Gold"] = Package(0.045 ether, 450000 * 10 ** 18, 45);
+        packages["Basic"] = Package(0.001 ether, 10000 * 10 ** 18);
+        packages["Bronze"] = Package(0.01 ether, 100000 * 10 ** 18);
+        packages["Silver"] = Package(0.02 ether, 200000 * 10 ** 18);
+        packages["Gold"] = Package(0.045 ether, 450000 * 10 ** 18);
     }
 
     function buyPackage(string memory _packageName) external payable {
-        require(packages[_packageName].price > 0, "Invalid package name");
+        // check package name is valid
+        require(
+            packages[_packageName].price > 0,
+            "TokenSale: invalid package name"
+        );
 
-        uint256 ethAmount = packages[_packageName].price;
-        uint256 tokensToReceive = packages[_packageName].tokens;
+        // Compare package name using keccak256
+        bytes32 packageNameHash = keccak256(bytes(_packageName));
+        bytes32 basicPackageHash = keccak256(bytes("Basic"));
 
-        // Transfer tokens to the buyer
-        require(msg.value >= ethAmount, "Insufficient ether sent");
-        token.transfer(msg.sender, tokensToReceive);
-
-        // balance tokens to the user
-        uint256 balance = token.balanceOf(msg.sender);
-        if (balance >= 10000 * 10 ** 18 && balance < 100000 * 10 ** 18) {
-            userLevels[msg.sender] = 1;
-        } else if (
-            balance >= 100000 * 10 ** 18 && balance < 200000 * 10 ** 18
-        ) {
-            userLevels[msg.sender] = 2;
-        } else if (
-            balance >= 200000 * 10 ** 18 && balance < 450000 * 10 ** 18
-        ) {
-            userLevels[msg.sender] = 3;
-        } else if (balance >= 450000 * 10 ** 18) {
-            userLevels[msg.sender] = 4;
+        if (packageNameHash == basicPackageHash) {
+            if (totalSuply < 1000) {
+                require(msg.value >= 0.0001 ether, "TokenSale: invalid price");
+                payable(address(this)).transfer(msg.value);
+                token.transfer(msg.sender, 1000 * 10 ** 18);
+                totalSuply += 1;
+            }
         }
 
-        // Refund excess ether
-        if (msg.value > ethAmount) {
-            payable(msg.sender).transfer(msg.value - ethAmount);
-        }
+        require(
+            msg.value >= packages[_packageName].price,
+            "TokenSale: invalid price"
+        );
+        payable(address(this)).transfer(msg.value);
+        token.transfer(msg.sender, packages[_packageName].tokens);
     }
 
     function setPackage(
         string memory _packageName,
         uint256 _price,
-        uint256 _tokens,
-        uint256 _commissionPercentage
+        uint256 _tokens
     ) external onlyOwner {
-        packages[_packageName] = Package(
-            _price,
-            _tokens,
-            _commissionPercentage
-        );
+        packages[_packageName] = Package(_price, _tokens);
     }
 
     function getPrice(

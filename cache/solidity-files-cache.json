@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/huy8bit/Desktop/DRIVE/JOB/Splitting_Me/dev/smc/contracts/SplittingToken.sol": {
-      "lastModificationDate": 1692812259721,
-      "contentHash": "de3ddecd8cccf30bf8f80ffa076defc3",
+      "lastModificationDate": 1693575887845,
+      "contentHash": "ad7ab0ec64698416b7ed85fc5e5f5fe0",
       "sourceName": "contracts/SplittingToken.sol",
       "solcConfig": {
         "version": "0.8.18",
@@ -807,8 +807,8 @@
       ]
     },
     "/Users/huy8bit/Desktop/DRIVE/JOB/Splitting_Me/dev/smc/contracts/TokenSale.sol": {
-      "lastModificationDate": 1692872718622,
-      "contentHash": "abbe05ba81cd0bf2487e3a53c218557c",
+      "lastModificationDate": 1693575864913,
+      "contentHash": "b1939def2a0337a16cf37fc765e3e2e1",
       "sourceName": "contracts/TokenSale.sol",
       "solcConfig": {
         "version": "0.8.18",

@@ -13,7 +13,10 @@ require("dotenv").config();
 async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
-  console.log("Account balance:", (await deployer.getBalance()).toString());
+  console.log(
+    "Account balance:",
+    utils.formatEther(await deployer.getBalance()).toString()
+  );
 
   console.log("Deploying contracts with the account:", deployer.address);
 
