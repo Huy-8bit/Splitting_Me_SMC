@@ -7,7 +7,7 @@ import "./SplittingToken.sol";
 
 contract TokenSale is Ownable {
     IERC20 public token; // The token being sold
-
+    uint256 public totalSuply;
     struct Package {
         uint256 price;
         uint256 tokens;
@@ -16,7 +16,7 @@ contract TokenSale is Ownable {
 
     mapping(string => Package) public packages;
     mapping(address => address) public referrals;
-    mapping(address => uint256) public userLevels; // Mapping to store user levels
+    mapping(address => uint256) public userLevels;
 
     constructor(address _tokenAddress) {
         token = IERC20(_tokenAddress);
@@ -58,42 +58,6 @@ contract TokenSale is Ownable {
             payable(msg.sender).transfer(msg.value - ethAmount);
         }
     }
-
-    // function buyPackageWithReferral(
-    //     string memory _packageName,
-    //     address _referrer
-    // ) external payable {
-    //     require(packages[_packageName].price > 0, "Invalid package name");
-
-    //     uint256 ethAmount = packages[_packageName].price;
-    //     uint256 tokensToReceive = packages[_packageName].tokens;
-    //     uint256 commissionPercentage = packages[_packageName]
-    //         .commissionPercentage;
-
-    //     // Calculate referral commission and update referral mapping
-    //     if (_referrer != address(0) && _referrer != msg.sender) {
-    //         tokensToReceive += (tokensToReceive * commissionPercentage) / 100;
-    //         referrals[msg.sender] = _referrer;
-    //     }
-
-    //     // Transfer tokens to the buyer
-    //     require(msg.value >= ethAmount, "Insufficient ether sent");
-    //     token.transfer(msg.sender, tokensToReceive);
-
-    //     // Distribute commission to referrer
-    //     address referrer = referrals[msg.sender];
-    //     if (referrer != address(0)) {
-    //         token.transfer(
-    //             referrer,
-    //             (tokensToReceive * commissionPercentage) / 100
-    //         );
-    //     }
-
-    //     // Refund excess ether
-    //     if (msg.value > ethAmount) {
-    //         payable(msg.sender).transfer(msg.value - ethAmount);
-    //     }
-    // }
 
     function setPackage(
         string memory _packageName,

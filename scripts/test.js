@@ -37,30 +37,27 @@ describe("Splitting Me", function () {
   });
 
   describe("Token", function () {
-    // it("should buyPackage", async function () {
-    //   const price = await tokenSale.getPrice("Basic");
-    //   console.log("price: ", price.toString());
-
-    //   _value = price.toString();
-    //   const result = await tokenSale.buyPackage("Basic", {
-    //     value: _value,
-    //   });
-    //   console.log("result: ", result);
-    // });
-
     it("should buyPackage", async function () {
-      const price = await tokenSale.getPrice("Bronze");
+      const price = await tokenSale.getPrice("Basic");
       console.log("price: ", price.toString());
-
       _value = price.toString();
-      const result = await tokenSale.buyPackageWithReferral(
-        "Bronze",
-        "0x469f72990944a8b60664A2e5185635b266E826b0",
-        {
-          value: _value,
-        }
-      );
+      const result = await tokenSale.buyPackage("Basic", {
+        value: _value,
+      });
       console.log("result: ", result);
     });
+    // it("should buyPackage", async function () {
+    //   const price = await tokenSale.getPrice("Bronze");
+    //   console.log("price: ", price.toString());
+    //   _value = price.toString();
+    //   const result = await tokenSale.buyPackageWithReferral(
+    //     "Bronze",
+    //     "0x469f72990944a8b60664A2e5185635b266E826b0",
+    //     {
+    //       value: _value,
+    //     }
+    //   );
+    //   console.log("result: ", result);
+    // });
   });
 });
