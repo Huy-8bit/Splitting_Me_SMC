@@ -6,65 +6,66 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./SplittingToken.sol";
 
 contract TokenSale is Ownable {
-    IERC20 public token; // The token being sold
+    IERC20 public token;
     uint256 public totalSuply;
+
+    enum Rank {
+        Basic,
+        Bronze,
+        Silver,
+        Gold
+    }
     struct Package {
         uint256 price;
         uint256 tokens;
     }
 
-    mapping(string => Package) public packages;
+    mapping(Rank => Package) public packages;
     mapping(address => address) public referrals;
     mapping(address => uint256) public userLevels;
 
     constructor(address _tokenAddress) {
         token = IERC20(_tokenAddress);
-        packages["Basic"] = Package(0.001 ether, 10000 * 10 ** 18);
-        packages["Bronze"] = Package(0.01 ether, 100000 * 10 ** 18);
-        packages["Silver"] = Package(0.02 ether, 200000 * 10 ** 18);
-        packages["Gold"] = Package(0.045 ether, 450000 * 10 ** 18);
+        packages[Rank.Basic] = Package(0.001 ether, 10000 * 10 ** 18); // 0
+        packages[Rank.Bronze] = Package(0.01 ether, 100000 * 10 ** 18); // 1
+        packages[Rank.Silver] = Package(0.02 ether, 200000 * 10 ** 18); // 2
+        packages[Rank.Gold] = Package(0.045 ether, 450000 * 10 ** 18); // 3
     }
 
-    function buyPackage(string memory _packageName) external payable {
-        // check package name is valid
-        require(
-            packages[_packageName].price > 0,
-            "TokenSale: invalid package name"
-        );
-
-        // Compare package name using keccak256
-        bytes32 packageNameHash = keccak256(bytes(_packageName));
-        bytes32 basicPackageHash = keccak256(bytes("Basic"));
-
-        if (packageNameHash == basicPackageHash) {
-            if (totalSuply < 1000) {
-                require(msg.value >= 0.0001 ether, "TokenSale: invalid price");
-                payable(address(this)).transfer(msg.value);
-                token.transfer(msg.sender, 1000 * 10 ** 18);
-                totalSuply += 1;
-            }
+    function buyPackage(uint256 _packageName) external payable {
+        if (Rank(_packageName) == Rank.Basic) {
+            require(
+                totalSuply < 1000 && msg.value == 0.0001 ether,
+                "TokenSale: invalid price"
+            );
+        } else {
+            require(
+                msg.value == packages[Rank(_packageName)].price,
+                "TokenSale: invalid price"
+            );
         }
-
         require(
-            msg.value >= packages[_packageName].price,
-            "TokenSale: invalid price"
+            token.balanceOf(address(this)) >=
+                packages[Rank(_packageName)].tokens,
+            "TokenSale: not enough tokens"
         );
-        payable(address(this)).transfer(msg.value);
-        token.transfer(msg.sender, packages[_packageName].tokens);
+        token.transfer(msg.sender, packages[Rank(_packageName)].tokens);
+        totalSuply += 1;
     }
 
     function setPackage(
-        string memory _packageName,
+        uint256 _packageName,
         uint256 _price,
         uint256 _tokens
     ) external onlyOwner {
-        packages[_packageName] = Package(_price, _tokens);
+        packages[Rank(_packageName)] = Package(_price, _tokens);
     }
 
-    function getPrice(
-        string memory _packageName
-    ) external view returns (uint256) {
-        return packages[_packageName].price;
+    function getPrice(uint256 _packageName) external view returns (uint256) {
+        if (Rank(_packageName) == Rank.Basic && totalSuply < 1000) {
+            return 0.0001 ether;
+        }
+        return packages[Rank(_packageName)].price;
     }
 
     function withdrawEther() external onlyOwner {

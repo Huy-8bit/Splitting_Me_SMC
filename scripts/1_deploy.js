@@ -4,7 +4,7 @@ require("hardhat-deploy");
 require("hardhat-deploy-ethers");
 const utils = ethers.utils;
 
-// comandline: npx hardhat run scripts/deploy.js --network sepolia
+// comandline: npx hardhat run scripts/1_deploy.js --network sepolia
 
 const TokenFilePath = "./deployment/SplittingToken.json";
 const TokenSaleFilePath = "./deployment/TokenSale.json";
@@ -17,8 +17,6 @@ async function main() {
     "Account balance:",
     utils.formatEther(await deployer.getBalance()).toString()
   );
-
-  console.log("Deploying contracts with the account:", deployer.address);
 
   const RWA = await ethers.getContractFactory("SplittingToken"); // Replace with your actual RWA contract name
   const rwaContract = await RWA.deploy();
@@ -45,7 +43,7 @@ async function main() {
   const totalSupply = await rwaContract.totalSupply();
   const totalSupplyInWei = utils.parseEther(totalSupply.toString());
   console.log("Total supply: ", totalSupplyInWei.toString());
-  await rwaContract.transfer(tokenSaleContract.address, totalSupply);
+  await rwaContract.transfer(dataSave.address.toString(), totalSupply);
   console.log("All tokens transferred to TokenSale contract.");
 }
 

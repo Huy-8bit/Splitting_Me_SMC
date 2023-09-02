@@ -38,10 +38,10 @@ describe("Splitting Me", function () {
 
   describe("Token", function () {
     it("should buyPackage", async function () {
-      const price = await tokenSale.getPrice("Basic");
+      var price = await tokenSale.getPrice(2);
       console.log("price: ", price.toString());
       _value = price.toString();
-      const result = await tokenSale.buyPackage("Basic", {
+      const result = await tokenSale.buyPackage(2, {
         value: _value,
       });
       console.log("result: ", result);

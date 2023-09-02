@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract SplittingToken is ERC20("Splitting Me", "RWA"), Ownable {
+contract CampaignTypesTokenERC20 is ERC20("Splitting Me", "RWA"), Ownable {
     uint256 private cap = 100_000_000_000 * 10 ** 18;
 
     constructor() {
