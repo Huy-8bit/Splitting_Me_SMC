@@ -53,6 +53,10 @@ contract TokenSale is Ownable {
         totalSuply += 1;
     }
 
+    function checkSlotBasic() external view returns (uint256) {
+        return totalSuply;
+    }
+
     function setPackage(
         uint256 _packageName,
         uint256 _price,
