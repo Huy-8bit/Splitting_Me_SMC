@@ -25,6 +25,9 @@ module.exports = {
     // Obtain one at https://etherscan.io/
     apiKey: "TRD75UM176G352ITIMFI6AA5K8RKAQ9WCB",
   },
+  mocha: {
+    timeout: 100000000,
+  },
   solidity: {
     compilers: [
       {
@@ -40,6 +43,7 @@ module.exports = {
         version: "0.4.18",
       },
     ],
+
     settings: {
       optimizer: {
         enabled: true,
