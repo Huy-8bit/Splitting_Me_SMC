@@ -28,8 +28,9 @@ const FactoryTokenData = fs.readFileSync(FactoryTokenFilePath);
 const FactoryTokenJSON = JSON.parse(FactoryTokenData);
 const FactoryTokenAddress = FactoryTokenJSON.address;
 
-const addres_recipient = "0xf30607e0cdEc7188d50d2bb384073bF1D5b02fA4";
-// const addres_recipient = "0x469f72990944a8b60664A2e5185635b266E826b0";
+// const addres_recipient = "0xf30607e0cdEc7188d50d2bb384073bF1D5b02fA4";
+const addres_recipient = "0x469f72990944a8b60664A2e5185635b266E826b0";
+
 // Define variables for contract instances and owner
 let nftSplittingME;
 let campaignTypesTokenERC20;
@@ -53,35 +54,60 @@ describe("Splitting Me", function () {
 
     [owner] = await ethers.getSigners();
     console.log("owner: ", owner.address);
+    console.log("NFTSplittingME Contract address:", nftSplittingME.address);
+    console.log(
+      "campaignTypesTokenERC20 Contract address:",
+      campaignTypesTokenERC20.address
+    );
+    console.log("FactoryToken Contract address:", factoryToken.address);
   });
 
   describe("Splitting Me", function () {
-    // it("should add a new slot mintNFT ", async function () {
-    //   const result = await factoryToken.addSlotMintNFT(addres_recipient);
-    //   console.log("result: ", result);
-    // });
-    // it("should create a new NFT ", async function () {
-    //   const result = await factoryToken.mintNFT("link");
-    //   console.log("result: ", result);
-    // });
-    // it("should create a new campagn ", async function () {
-    //   const result = await factoryToken.createNewCampaign(
-    //     "BDS2",
-    //     "BL",
-    //     3
-    //   );
-    //   console.log("result: ", result);
-    // });
-    // it("Should mint token", async function () {
-    //   const tokenContract = await ethers.getContractAt(
-    //     "CampaignTypesTokenERC20",
-    //     "0x614a2428c44a9270dfe99fa85eab1894044579a9"
-    //   );
-    //   const result = await tokenContract.mint(
-    //     owner.address,
-    //     ethers.utils.parseEther("25000000")
-    //   );
-    //   console.log("result: ", result);
-    // });
+    it("should add a new slot mintNFT ", async function () {
+      const result = await factoryToken.addSlotMintNFT(addres_recipient);
+      console.log("result: ", result);
+    });
+    it("should create a new NFT ", async function () {
+      const result = await factoryToken.mintNFT("link");
+      console.log("result: ", result);
+    });
+    it("should get all NFT", async function () {
+      const result = await nftSplittingME.getAllNFT(owner.address);
+      console.log("result: ", result);
+    });
+    it("should get Campaign", async function () {
+      const result = await factoryToken.campaignsByID(1);
+      console.log("result: ", result.campaignAddress);
+    });
+    it("should check list NFT", async function () {
+      const listNFT = await nftSplittingME.getAllNFT(owner.address);
+      console.log("listNFT: ", listNFT.toString());
+      for (let i = 0; i < listNFT.length; i++) {
+        const result = await factoryToken.NFTsUsed(listNFT[i]);
+        console.log("result: ", result);
+      }
+    });
+    it("should create a new campagn ", async function () {
+      const listNFT = await nftSplittingME.getAllNFT(owner.address);
+      console.log("listNFT: ", listNFT.toString());
+      for (let i = 0; i < listNFT.length; i++) {
+        const result = await factoryToken.NFTsUsed(listNFT[i]);
+        console.log("result: ", result);
+      }
+      const result = await factoryToken.createNewCampaign("BDS2", "BL", 2);
+      console.log("result: ", result);
+    });
+    it("Should mint token", async function () {
+      const tokenAddress = await factoryToken.campaignsByID(1);
+      const tokenContract = await ethers.getContractAt(
+        "CampaignTypesTokenERC20",
+        tokenAddress.campaignAddress
+      );
+      const result = await tokenContract.mint(
+        owner.address,
+        ethers.utils.parseEther("2500000000")
+      );
+      console.log("result: ", result);
+    });
   });
 });

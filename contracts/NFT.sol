@@ -46,15 +46,16 @@ contract NFTSplittingME is ERC721URIStorage, Ownable {
         transferOwnership(to);
     }
 
-    function getAllNFT(address _user) external view returns (uint256[] memory) {
-        uint256[] memory tokenIds = new uint256[](_tokenIds.current());
-        for (uint256 i = 0; i < _tokenIds.current(); i++) {
-            // check owner of token
-            if (ownerOf(i) == _user) {
-                tokenIds[i] = i;
+    function getAllNFT(address _owner) public view returns (uint256[] memory) {
+        uint256[] memory result = new uint256[](_tokenIds.current());
+        uint256 counter = 0;
+        for (uint256 i = 1; i <= _tokenIds.current(); i++) {
+            if (ownerOf(i) == _owner) {
+                result[counter] = i;
+                counter++;
             }
         }
-        return tokenIds;
+        return result;
     }
 
     function burn(uint256 tokenId) external {
