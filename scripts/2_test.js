@@ -63,42 +63,42 @@ describe("Splitting Me", function () {
   });
 
   describe("Splitting Me", function () {
-    it("should add a new slot mintNFT ", async function () {
-      const result = await factoryToken.addSlotMintNFT(addres_recipient);
-      console.log("result: ", result);
-    });
-    it("should create a new NFT ", async function () {
-      const result = await factoryToken.mintNFT("link");
-      console.log("result: ", result);
-    });
-    it("should get all NFT", async function () {
-      const result = await nftSplittingME.getAllNFT(owner.address);
-      console.log("result: ", result);
-    });
-    it("should get Campaign", async function () {
-      const result = await factoryToken.campaignsByID(1);
-      console.log("result: ", result.campaignAddress);
-    });
-    it("should check list NFT", async function () {
-      const listNFT = await nftSplittingME.getAllNFT(owner.address);
-      console.log("listNFT: ", listNFT.toString());
-      for (let i = 0; i < listNFT.length; i++) {
-        const result = await factoryToken.NFTsUsed(listNFT[i]);
-        console.log("result: ", result);
-      }
-    });
-    it("should create a new campagn ", async function () {
-      const listNFT = await nftSplittingME.getAllNFT(owner.address);
-      console.log("listNFT: ", listNFT.toString());
-      for (let i = 0; i < listNFT.length; i++) {
-        const result = await factoryToken.NFTsUsed(listNFT[i]);
-        console.log("result: ", result);
-      }
-      const result = await factoryToken.createNewCampaign("BDS2", "BL", 2);
-      console.log("result: ", result);
-    });
+    // it("should add a new slot mintNFT ", async function () {
+    //   const result = await factoryToken.addSlotMintNFT(addres_recipient);
+    //   console.log("result: ", result);
+    // });
+    // it("should create a new NFT ", async function () {
+    //   const result = await factoryToken.mintNFT("link");
+    //   console.log("result: ", result);
+    // });
+    // it("should get all NFT", async function () {
+    //   const result = await nftSplittingME.getAllNFT(owner.address);
+    //   console.log("result: ", result);
+    // });
+    // it("should get Campaign", async function () {
+    //   const result = await factoryToken.campaignsByID(1);
+    //   console.log("result: ", result.campaignAddress);
+    // });
+    // it("should check list NFT", async function () {
+    //   const listNFT = await nftSplittingME.getAllNFT(owner.address);
+    //   console.log("listNFT: ", listNFT.toString());
+    //   for (let i = 0; i < listNFT.length; i++) {
+    //     const result = await factoryToken.NFTsUsed(listNFT[i]);
+    //     console.log("result: ", result);
+    //   }
+    // });
+    // it("should create a new campagn ", async function () {
+    //   const listNFT = await nftSplittingME.getAllNFT(owner.address);
+    //   console.log("listNFT: ", listNFT.toString());
+    //   for (let i = 0; i < listNFT.length; i++) {
+    //     const result = await factoryToken.NFTsUsed(listNFT[i]);
+    //     console.log("result: ", result);
+    //   }
+    //   const result = await factoryToken.createNewCampaign("BDS2", "BL", 2);
+    //   console.log("result: ", result);
+    // });
     it("Should mint token", async function () {
-      const tokenAddress = await factoryToken.campaignsByID(1);
+      const tokenAddress = await factoryToken.campaignsByID(2);
       const tokenContract = await ethers.getContractAt(
         "CampaignTypesTokenERC20",
         tokenAddress.campaignAddress

@@ -33,24 +33,24 @@ contract TokenSale is Ownable {
     }
 
     function buyPackage(uint256 _packageName) external payable {
+        require(
+            token.balanceOf(address(this)) >=
+                packages[Rank(_packageName)].tokens,
+            "TokenSale: not enough tokens"
+        );
         if (Rank(_packageName) == Rank.Basic) {
             require(
                 totalSuply < 1000 && msg.value == 0.0001 ether,
                 "TokenSale: invalid price"
             );
+            totalSuply += 1;
         } else {
             require(
                 msg.value == packages[Rank(_packageName)].price,
                 "TokenSale: invalid price"
             );
         }
-        require(
-            token.balanceOf(address(this)) >=
-                packages[Rank(_packageName)].tokens,
-            "TokenSale: not enough tokens"
-        );
         token.transfer(msg.sender, packages[Rank(_packageName)].tokens);
-        totalSuply += 1;
     }
 
     function checkSlotBasic() external view returns (uint256) {

@@ -19,11 +19,14 @@ module.exports = {
       url: "https://eth-goerli.g.alchemy.com/v2/GeMVzoOnF9s91czx6zYdUA6mAjA39Q46",
       accounts: [process.env.REAL_ACCOUNTS],
     },
+    bnb: {
+      url: `https://bsc-testnet.publicnode.com`,
+      accounts: [process.env.REAL_ACCOUNTS],
+    },
   },
   etherscan: {
-    // Your API key for Etherscan
-    // Obtain one at https://etherscan.io/
-    apiKey: "TRD75UM176G352ITIMFI6AA5K8RKAQ9WCB",
+    // apiKey: "M64XAN9UH462FXT539BY5DEMBW5UYKAZBG",
+    apiKey:"EC7KP6CMPVYJ3CJUIZEWVZWAX8JB2YBUZU"
   },
   mocha: {
     timeout: 100000000,
