@@ -37,23 +37,23 @@ describe("Splitting Me", function () {
   });
 
   describe("Token", function () {
+    // it("should buyPackage", async function () {
+    //   for (var i = 0; i < 100; i++) {
+    //     packageBuy = 0;
+    //     var price = await tokenSale.getPrice(packageBuy);
+    //     console.log("price: ", price.toString());
+    //     _value = price.toString();
+    //     const result = await tokenSale.buyPackage(packageBuy, {
+    //       value: _value,
+    //     });
+    //     console.log("result: ", result);
+    //     // delay 15s
+    //     await new Promise((r) => setTimeout(r, 15000));
+    //   }
+    // });
     it("should buyPackage", async function () {
       for (var i = 0; i < 100; i++) {
-        packageBuy = 0;
-        var price = await tokenSale.getPrice(packageBuy);
-        console.log("price: ", price.toString());
-        _value = price.toString();
-        const result = await tokenSale.buyPackage(packageBuy, {
-          value: _value,
-        });
-        console.log("result: ", result);
-        // delay 15s
-        await new Promise((r) => setTimeout(r, 15000));
-      }
-    });
-    it("should buyPackage", async function () {
-      for (var i = 0; i < 100; i++) {
-        packageBuy = 0;
+        packageBuy = 1;
         var price = await tokenSale.getPrice(packageBuy);
         console.log("price: ", price.toString());
         _value = price.toString();
