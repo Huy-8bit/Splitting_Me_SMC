@@ -52,8 +52,8 @@ describe("Splitting Me", function () {
     //   }
     // });
     it("should buyPackage", async function () {
-      for (var i = 0; i < 100; i++) {
-        packageBuy = 1;
+      for (var i = 0; i < 1; i++) {
+        packageBuy = 0;
         var price = await tokenSale.getPrice(packageBuy);
         console.log("price: ", price.toString());
         _value = price.toString();

@@ -4,10 +4,12 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./SplittingToken.sol";
+import "./USDT.sol";
 
 contract TokenSale is Ownable {
     IERC20 public token;
-    uint256 public totalSuply;
+    IERC20 public usdt;
+    uint256 public totalSupply;
 
     enum Rank {
         Basic,
@@ -16,7 +18,7 @@ contract TokenSale is Ownable {
         Gold
     }
     struct Package {
-        uint256 price;
+        uint256 priceUsdt; // Giá của gói trong USDT
         uint256 tokens;
     }
 
@@ -24,55 +26,65 @@ contract TokenSale is Ownable {
     mapping(address => address) public referrals;
     mapping(address => uint256) public userLevels;
 
-    constructor(address _tokenAddress) {
+    constructor(address _tokenAddress, address _usdtAddress) {
         token = IERC20(_tokenAddress);
-        packages[Rank.Basic] = Package(0.001 ether, 10000 * 10 ** 18); // 0
-        packages[Rank.Bronze] = Package(0.01 ether, 100000 * 10 ** 18); // 1
-        packages[Rank.Silver] = Package(0.02 ether, 200000 * 10 ** 18); // 2
-        packages[Rank.Gold] = Package(0.045 ether, 450000 * 10 ** 18); // 3
+        usdt = IERC20(_usdtAddress);
+        packages[Rank.Basic] = Package(1000 * 10 ** 18, 10000 * 10 ** 18); // 1000 USDT, 10,000 tokens
+        packages[Rank.Bronze] = Package(10000 * 10 ** 18, 100000 * 10 ** 18); // 10,000 USDT, 100,000 tokens
+        packages[Rank.Silver] = Package(20000 * 10 ** 18, 200000 * 10 ** 18); // 20,000 USDT, 200,000 tokens
+        packages[Rank.Gold] = Package(45000 * 10 ** 18, 450000 * 10 ** 18); // 45,000 USDT, 450,000 tokens
     }
 
-    function buyPackage(uint256 _packageName) external payable {
+    function buyPackage(uint256 _packageName, uint _usdtSend) external {
         require(
             token.balanceOf(address(this)) >=
                 packages[Rank(_packageName)].tokens,
             "TokenSale: not enough tokens"
         );
+        require(
+            usdt.transferFrom(
+                msg.sender,
+                address(this),
+                packages[Rank(_packageName)].priceUsdt
+            ),
+            "TokenSale: USDT transfer failed"
+        );
+
         if (Rank(_packageName) == Rank.Basic) {
             require(
-                totalSuply < 1000 && msg.value == 0.0001 ether,
+                totalSupply < 1000 && _usdtSend >= 100 * 10 ** 18,
                 "TokenSale: invalid price"
             );
-            totalSuply += 1;
-        } else {
-            require(
-                msg.value == packages[Rank(_packageName)].price,
-                "TokenSale: invalid price"
-            );
+            totalSupply += 1;
         }
+
         token.transfer(msg.sender, packages[Rank(_packageName)].tokens);
     }
 
     function checkSlotBasic() external view returns (uint256) {
-        return totalSuply;
+        return totalSupply;
     }
 
     function setPackage(
         uint256 _packageName,
-        uint256 _price,
+        uint256 _priceUsdt,
         uint256 _tokens
     ) external onlyOwner {
-        packages[Rank(_packageName)] = Package(_price, _tokens);
+        packages[Rank(_packageName)] = Package(_priceUsdt, _tokens);
     }
 
     function getPrice(uint256 _packageName) external view returns (uint256) {
-        if (Rank(_packageName) == Rank.Basic && totalSuply < 1000) {
-            return 0.0001 ether;
+        if (Rank(_packageName) == Rank.Basic && totalSupply < 1000) {
+            return 100 * 10 ** 18;
         }
-        return packages[Rank(_packageName)].price;
+        return packages[Rank(_packageName)].priceUsdt;
     }
 
     function withdrawEther() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
+    }
+
+    function withdrawUSDT() external onlyOwner {
+        usdt.transfer(owner(), usdt.balanceOf(address(this)));
     }
 }
