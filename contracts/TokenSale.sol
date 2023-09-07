@@ -41,21 +41,28 @@ contract TokenSale is Ownable {
                 packages[Rank(_packageName)].tokens,
             "TokenSale: not enough tokens"
         );
-        require(
-            usdt.transferFrom(
-                msg.sender,
-                address(this),
-                packages[Rank(_packageName)].priceUsdt
-            ),
-            "TokenSale: USDT transfer failed"
-        );
 
         if (Rank(_packageName) == Rank.Basic) {
-            require(
-                totalSupply < 1000 && _usdtSend >= 100 * 10 ** 18,
-                "TokenSale: invalid price"
-            );
+            if (totalSupply <= 1000) {
+                require(
+                    _usdtSend >= 100 * 10 ** 18,
+                    "TokenSale: invalid price"
+                );
+                require(
+                    usdt.transferFrom(msg.sender, address(this), _usdtSend),
+                    "TokenSale: transfer failed"
+                );
+            }
             totalSupply += 1;
+        } else {
+            require(
+                usdt.transferFrom(
+                    msg.sender,
+                    address(this),
+                    packages[Rank(_packageName)].priceUsdt
+                ),
+                "TokenSale: transfer failed"
+            );
         }
 
         token.transfer(msg.sender, packages[Rank(_packageName)].tokens);

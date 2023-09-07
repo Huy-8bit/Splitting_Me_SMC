@@ -18,18 +18,41 @@ async function main() {
     utils.formatEther(await deployer.getBalance()).toString()
   );
 
+  // deploy USDT
+  const USDT = await ethers.getContractFactory("USDT");
+  const uSDT = await USDT.deploy();
+  await uSDT.deployed();
+  console.log("USDT address:", uSDT.address);
+  console.log("Token total supply:", (await uSDT.totalSupply()).toString());
+
+  const USDTData = {
+    name: "USDT Token",
+    USDTAddress: uSDT.address,
+  };
+  const USDTTokenJsonData = JSON.stringify(USDTData, null, 2);
+  fs.writeFileSync("./deployment/USDT.json", USDTTokenJsonData);
+
+  // deploy RWA
   const RWA = await ethers.getContractFactory("SplittingToken"); // Replace with your actual RWA contract name
   const rwaContract = await RWA.deploy();
   await rwaContract.deployed();
   console.log("RWA Contract address:", rwaContract.address);
+  console.log(
+    "Token total supply:",
+    (await rwaContract.totalSupply()).toString()
+  );
   var dataSave = {
     name: "SplittingToken",
     address: rwaContract.address,
   };
   fs.writeFileSync(TokenFilePath, JSON.stringify(dataSave, null, 2));
 
+  // deploy TokenSale
   const TokenSale = await ethers.getContractFactory("TokenSale"); // Replace with your actual TokenSale contract name
-  const tokenSaleContract = await TokenSale.deploy(rwaContract.address);
+  const tokenSaleContract = await TokenSale.deploy(
+    rwaContract.address,
+    uSDT.address
+  );
   await tokenSaleContract.deployed();
   console.log("TokenSale Contract address:", tokenSaleContract.address);
   dataSave = {
