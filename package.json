@@ -24,6 +24,8 @@
     "moralis": "^2.13.0",
     "remixd": "^0.2.4",
     "truffle": "^5.5.13",
+    "@uniswap/lib": "4.0.1-alpha",
+    "@uniswap/v2-core": "1.0.0",
     "truffle-contract-size": "^2.0.1",
     "truffle-flatten": "^1.0.6",
     "truffle-privatekey-provider": "^1.2.0",
