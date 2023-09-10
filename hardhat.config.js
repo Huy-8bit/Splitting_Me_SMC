@@ -8,7 +8,9 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-verify");
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 
-module.exports = {
+// real Account private key
+
+const REAL_ACCOUNTS = (module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     sepolia: {
@@ -60,4 +62,4 @@ module.exports = {
       },
     },
   },
-};
+});
