@@ -65,14 +65,19 @@ contract FactoryToken is Ownable {
         require(NFTsUsed[_NFTID] == false, "This NFT is already used");
 
         address newCampaign = Clones.clone(campaignTypesTokenERC20Template);
+
         // Initialize the campaign
         CampaignTypesTokenERC20(newCampaign).initialize(_name, _symbol);
+
         // Transfer ownership to the caller of this function
         Ownable(newCampaign).transferOwnership(msg.sender);
         campaignsByOwner[msg.sender].push(newCampaign);
         campaigns[msg.sender] -= 1;
         NFTsUsed[_NFTID] = true;
         campaignsByID[_NFTID] = Campaign(msg.sender, newCampaign, _NFTID);
+
+        nft.transferFrom(msg.sender, address(this), _NFTID);
+
         emit CampaignCreated(msg.sender, newCampaign, _NFTID);
     }
 
@@ -95,5 +100,23 @@ contract FactoryToken is Ownable {
         address _owner
     ) external view returns (address[] memory) {
         return campaignsByOwner[_owner];
+    }
+
+    function withdrawNFT(uint256 _NFTID) external {
+        Campaign storage campaign = campaignsByID[_NFTID];
+        address campaignAddress = campaign.campaignAddress;
+
+        require(
+            msg.sender == campaign.owner,
+            "Only the owner can withdraw the NFT"
+        );
+
+        require(
+            CampaignTypesTokenERC20(campaignAddress).totalSupply() == 0,
+            "TotalSupply must be 0 to withdraw the NFT"
+        );
+
+        nft.transferFrom(address(this), msg.sender, _NFTID);
+        NFTsUsed[_NFTID] = false;
     }
 }

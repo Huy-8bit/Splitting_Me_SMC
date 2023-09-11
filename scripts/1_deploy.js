@@ -27,7 +27,7 @@ async function main() {
 
   const USDTData = {
     name: "USDT Token",
-    USDTAddress: uSDT.address,
+    address: uSDT.address,
   };
   const USDTTokenJsonData = JSON.stringify(USDTData, null, 2);
   fs.writeFileSync("./deployment/USDT.json", USDTTokenJsonData);

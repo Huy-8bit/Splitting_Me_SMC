@@ -6,7 +6,7 @@ const fs = require("fs");
 const { id } = require("ethers/lib/utils");
 const utils = ethers.utils;
 require("dotenv").config();
-// const { WETH } = require("@uniswap/v2-periphery");
+
 // comandline: npx hardhat test scripts/1_test.js --network sepolia
 
 const TokenFilePath = "./deployment/SplittingToken.json";

@@ -6,7 +6,7 @@ import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract FactorySwap is Ownable {
+contract FactoryPool is Ownable {
     address public CampaignPoolSwapTemplate;
 
     struct Campaign {

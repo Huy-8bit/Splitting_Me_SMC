@@ -19,6 +19,7 @@ contract CampaignPoolSwap is OwnableUpgradeable {
 
     uint256 public poolusdtToken;
     uint256 public poolToken1;
+    mapping(address => uint256) public poolFees; // Store the fees for each pool participant
 
     constructor() {}
 
@@ -32,6 +33,7 @@ contract CampaignPoolSwap is OwnableUpgradeable {
         token1 = ERC20(_token1);
         swapFee = _swapFee;
         ratio = _ratio;
+        __Ownable_init();
     }
 
     function getReserves() public view returns (uint256, uint256) {
@@ -47,11 +49,29 @@ contract CampaignPoolSwap is OwnableUpgradeable {
         balancesAddPool[msg.sender] += _amount;
     }
 
+    function addPoolToken(address _token1, uint256 _amount) external onlyOwner {
+        require(_token1 == address(token1), "Invalid token");
+        token1.transferFrom(msg.sender, address(this), _amount);
+        balancesAddPool[msg.sender] += _amount;
+    }
+
+    // Helper function to get the total reserve in the pool
+    function getReserveTotal() internal view returns (uint256) {
+        (uint256 usdtReserve, uint256 token1Reserve) = getReserves();
+        return usdtReserve + token1Reserve;
+    }
+
     function withdrawPool() external {
-        uint256 amount = balancesAddPool[msg.sender];
-        require(amount > 0, "Insufficient balance");
+        uint256 userBalance = balancesAddPool[msg.sender];
+        require(userBalance > 0, "No balance to withdraw");
+
+        uint256 totalBalance = getReserveTotal();
+        uint256 feeShare = (userBalance * poolFees[msg.sender]) / totalBalance;
+
+        poolFees[msg.sender] = 0;
         balancesAddPool[msg.sender] = 0;
-        usdtToken.transfer(msg.sender, amount);
+
+        usdtToken.transfer(msg.sender, userBalance + feeShare);
     }
 
     function swap(address _from, address _to, uint256 _amount) external {
