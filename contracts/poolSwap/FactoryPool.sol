@@ -9,6 +9,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract FactoryPool is Ownable {
     address public CampaignPoolSwapTemplate;
 
+    address[] public campaignsAddresses;
+
     struct Campaign {
         address owner;
         address campaignAddress;
@@ -54,7 +56,14 @@ contract FactoryPool is Ownable {
 
         //transferOwnership
         Ownable(campaignAddress).transferOwnership(msg.sender);
+
         emit CampaignCreated(msg.sender, campaignAddress, _token0, _token1);
+        // add campaignAddress to campaignsAddresses
+        campaignsAddresses.push(campaignAddress);
+    }
+
+    function getCampaignsAddresses() external view returns (address[] memory) {
+        return campaignsAddresses;
     }
 
     function getCampaignsByOwner(

@@ -23,7 +23,7 @@ const tokenSaleAddress = tokenSaleJSON.address;
 
 const USDTData = fs.readFileSync(USDTFilePath);
 const USDTJSON = JSON.parse(USDTData);
-const USDTAddress = USDTJSON.USDTAddress;
+const USDTAddress = USDTJSON.address;
 
 const addres_recipient = "0x657888B7eCBEF11bb4c446C6a1d61FF979468c70";
 
@@ -45,10 +45,15 @@ describe("Splitting Me", function () {
   });
 
   describe("Token", function () {
-    it("Should transfer 5000000 USDT to recipient", async function () {
-      const amount = utils.parseEther("5000000");
-      const result = await uSDT.transfer(addres_recipient, amount);
-      console.log("result: ", result);
+    // it("Should transfer 5000000 USDT to recipient", async function () {
+    //   const amount = utils.parseEther("5000000");
+    //   const result = await uSDT.transfer(addres_recipient, amount);
+    //   console.log("result: ", result);
+    // });
+
+    it("Should get price package", async function () {
+      const price = await tokenSale.getPrice(0);
+      console.log("price: ", price.toString());
     });
     // it("should one buyPackage", async function () {
     //   packageBuy = 0;

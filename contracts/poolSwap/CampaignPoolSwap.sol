@@ -19,7 +19,6 @@ contract CampaignPoolSwap is OwnableUpgradeable {
 
     uint256 public poolusdtToken;
     uint256 public poolToken1;
-    mapping(address => uint256) public poolFees; // Store the fees for each pool participant
 
     constructor() {}
 
@@ -45,33 +44,30 @@ contract CampaignPoolSwap is OwnableUpgradeable {
 
     function FramPool(address _tokenUSDT, uint256 _amount) external {
         require(_tokenUSDT == address(usdtToken), "Invalid token");
+        require(token1.balanceOf(address(this)) > 0, "Invalid token");
         usdtToken.transferFrom(msg.sender, address(this), _amount);
+        poolusdtToken += _amount;
         balancesAddPool[msg.sender] += _amount;
+    }
+
+    function getBalancePool() external view returns (uint256) {
+        return token1.balanceOf(address(this));
     }
 
     function addPoolToken(address _token1, uint256 _amount) external onlyOwner {
         require(_token1 == address(token1), "Invalid token");
         token1.transferFrom(msg.sender, address(this), _amount);
-        balancesAddPool[msg.sender] += _amount;
-    }
-
-    // Helper function to get the total reserve in the pool
-    function getReserveTotal() internal view returns (uint256) {
-        (uint256 usdtReserve, uint256 token1Reserve) = getReserves();
-        return usdtReserve + token1Reserve;
+        poolToken1 += _amount;
     }
 
     function withdrawPool() external {
         uint256 userBalance = balancesAddPool[msg.sender];
         require(userBalance > 0, "No balance to withdraw");
-
-        uint256 totalBalance = getReserveTotal();
-        uint256 feeShare = (userBalance * poolFees[msg.sender]) / totalBalance;
-
-        poolFees[msg.sender] = 0;
+        uint256 totalSwapFee = (poolusdtToken * swapFee) / 100000;
+        uint256 totalSwapFeeUser = (totalSwapFee * userBalance) / poolusdtToken;
+        uint256 totalWithdrawAmount = userBalance + totalSwapFeeUser;
         balancesAddPool[msg.sender] = 0;
-
-        usdtToken.transfer(msg.sender, userBalance + feeShare);
+        usdtToken.transfer(msg.sender, totalWithdrawAmount);
     }
 
     function swap(address _from, address _to, uint256 _amount) external {
@@ -109,6 +105,9 @@ contract CampaignPoolSwap is OwnableUpgradeable {
             amount0Out = amount0Out - feeusdtToken;
             usdtToken.transfer(address(this), amount0Out);
             token1.transfer(msg.sender, amount1Out);
+            poolusdtToken += amount0Out;
+            poolToken1 -= amount1Out;
+            poolusdtToken += feeusdtToken;
         } else {
             // transfer fee usdtToken
             uint256 feeusdtToken = (amount0Out * swapFee) / 100000;
@@ -116,6 +115,9 @@ contract CampaignPoolSwap is OwnableUpgradeable {
             amount0Out = amount0Out - feeusdtToken;
             usdtToken.transfer(msg.sender, amount0Out);
             token1.transfer(address(this), amount1Out);
+            poolusdtToken -= amount0Out;
+            poolToken1 += amount1Out;
+            poolusdtToken += feeusdtToken;
         }
     }
 }
