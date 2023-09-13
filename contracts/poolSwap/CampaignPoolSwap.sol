@@ -108,13 +108,13 @@ contract CampaignPoolSwap is OwnableUpgradeable {
             poolusdtToken += amount0Out;
             poolToken1 -= amount1Out;
             poolusdtToken += feeusdtToken;
-        } else {
+        } else if (_from == address(token1)) {
             // transfer fee usdtToken
             uint256 feeusdtToken = (amount0Out * swapFee) / 100000;
-            usdtToken.transferFrom(msg.sender, address(this), feeusdtToken);
+            // usdtToken.transferFrom(address, address(this), feeusdtToken);
             amount0Out = amount0Out - feeusdtToken;
             usdtToken.transfer(msg.sender, amount0Out);
-            token1.transfer(address(this), amount1Out);
+            token1.transferFrom(msg.sender, address(this), amount1Out);
             poolusdtToken -= amount0Out;
             poolToken1 += amount1Out;
             poolusdtToken += feeusdtToken;

@@ -25,8 +25,8 @@ const USDTData = fs.readFileSync(USDTFilePath);
 const USDTJSON = JSON.parse(USDTData);
 const USDTAddress = USDTJSON.address;
 
-const token1Address = "0x3d1C8822090C1409A11F8b0f8C35A49E612a24e0";
-const addressPool = "0x0bc85c0EC00c6d6b2A5a5C6c8835e33EDd7b4886";
+const token1Address = "0x07958E8d0c48fcc19d5d40B13475F510F6158cC8";
+const addressPool = "0xE1a38447cf95aF32EE04cff428fCc34e9fa65B7D";
 // Define variables for contract instances and owner
 let campaignPoolSwap;
 let factoryPool;
@@ -68,24 +68,24 @@ describe("Splitting Me", function () {
     //   );
     //   console.log("result: ", result);
     // });
-    it("Should add addPoolToken ", async function () {
-      // connect contract
-      const CampaignPoolSwap1 = await ethers.getContractFactory(
-        "CampaignPoolSwap"
-      );
-      let campaignPoolSwap1 = await CampaignPoolSwap1.attach(addressPool);
-      console.log("campaignPoolSwap1: ", campaignPoolSwap1.address);
-      // approve token
-      const approve = await token.approve(
-        campaignPoolSwap1.address,
-        ethers.utils.parseEther("10000")
-      );
-      const result = await campaignPoolSwap1.addPoolToken(
-        token1Address,
-        ethers.utils.parseEther("10000")
-      );
-      console.log("result: ", result.hash);
-    });
+    // it("Should add addPoolToken ", async function () {
+    //   // connect contract
+    //   const CampaignPoolSwap1 = await ethers.getContractFactory(
+    //     "CampaignPoolSwap"
+    //   );
+    //   let campaignPoolSwap1 = await CampaignPoolSwap1.attach(addressPool);
+    //   console.log("campaignPoolSwap1: ", campaignPoolSwap1.address);
+    //   // approve token
+    //   const approve = await token.approve(
+    //     campaignPoolSwap1.address,
+    //     ethers.utils.parseEther("100")
+    //   );
+    //   const result = await campaignPoolSwap1.addPoolToken(
+    //     token1Address,
+    //     ethers.utils.parseEther("100")
+    //   );
+    //   console.log("result: ", result.hash);
+    // });
     // it("Should add fram pool", async function () {
     //   // connect contract
     //   const CampaignPoolSwap1 = await ethers.getContractFactory(
@@ -129,29 +129,29 @@ describe("Splitting Me", function () {
     //   );
     //   console.log("result: ", result.hash);
     // });
-    // it("Shold swap token to usdt", async function () {
-    //   // connect contract
-    //   const CampaignPoolSwap1 = await ethers.getContractFactory(
-    //     "CampaignPoolSwap"
-    //   );
-    //   let campaignPoolSwap1 = await CampaignPoolSwap1.attach(addressPool);
-    //   console.log("campaignPoolSwap1: ", campaignPoolSwap1.address);
-    //   // approve token
-    //   const approve = await token.approve(
-    //     campaignPoolSwap1.address,
-    //     ethers.utils.parseEther("1000")
-    //   );
-    //   console.log("approve: ", approve.hash);
-    //   // delay 15s
-    //   await new Promise((r) => setTimeout(r, 15000));
-    //   // swap token to usdt
-    //   const result = await campaignPoolSwap1.swap(
-    //     token1Address,
-    //     usdt.address,
-    //     ethers.utils.parseEther("1000")
-    //   );
-    //   console.log("result: ", result.hash);
-    // });
+    it("Shold swap token to usdt", async function () {
+      // connect contract
+      const CampaignPoolSwap1 = await ethers.getContractFactory(
+        "CampaignPoolSwap"
+      );
+      let campaignPoolSwap1 = await CampaignPoolSwap1.attach(addressPool);
+      console.log("campaignPoolSwap1: ", campaignPoolSwap1.address);
+      // approve token
+      const approve = await token.approve(
+        campaignPoolSwap1.address,
+        ethers.utils.parseEther("100")
+      );
+      console.log("approve: ", approve.hash);
+      // delay 15s
+      await new Promise((r) => setTimeout(r, 15000));
+      // swap token to usdt
+      const result = await campaignPoolSwap1.swap(
+        token1Address,
+        usdt.address,
+        ethers.utils.parseEther("100")
+      );
+      console.log("result: ", result.hash);
+    });
     // it("should withdraw token", async function () {
     //   // connect contract
     //   const CampaignPoolSwap1 = await ethers.getContractFactory(
