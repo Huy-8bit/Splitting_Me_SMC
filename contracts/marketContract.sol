@@ -28,6 +28,8 @@ contract NFTMarketplace is Ownable {
 
     mapping(uint256 => ListedNFT) public idToListedNFT;
 
+    uint256[] public listedNFTs;
+
     address private platformFeeAddress;
 
     constructor(address _nftAddress, address _tokenAddress) {
@@ -60,7 +62,7 @@ contract NFTMarketplace is Ownable {
             _price
         );
         totalNFTs += 1;
-
+        listedNFTs.push(_tokenId);
         emit NFTListedSuccess(_tokenId, msg.sender, _price);
     }
 
@@ -86,6 +88,15 @@ contract NFTMarketplace is Ownable {
         nft.transferFrom(address(this), msg.sender, _tokenId);
 
         delete idToListedNFT[_tokenId];
+
+        // remove from listedNFTs array
+        for (uint256 i = 0; i < listedNFTs.length; i++) {
+            if (listedNFTs[i] == _tokenId) {
+                listedNFTs[i] = listedNFTs[listedNFTs.length - 1];
+                listedNFTs.pop();
+                break;
+            }
+        }
         totalNFTs -= 1;
     }
 
@@ -102,6 +113,14 @@ contract NFTMarketplace is Ownable {
         nft.transferFrom(address(this), msg.sender, _tokenId);
 
         delete idToListedNFT[_tokenId];
+        // remove from listedNFTs array
+        for (uint256 i = 0; i < listedNFTs.length; i++) {
+            if (listedNFTs[i] == _tokenId) {
+                listedNFTs[i] = listedNFTs[listedNFTs.length - 1];
+                listedNFTs.pop();
+                break;
+            }
+        }
         totalNFTs -= 1;
     }
 
@@ -110,15 +129,7 @@ contract NFTMarketplace is Ownable {
         platformFee = _platformFee;
     }
 
-    function getNFTs() external view returns (ListedNFT[] memory) {
-        ListedNFT[] memory listedNFTs = new ListedNFT[](totalNFTs);
-        uint256 counter = 0;
-        for (uint256 i = 0; i < totalNFTs; i++) {
-            if (idToListedNFT[i + 1].tokenId != 0) {
-                listedNFTs[counter] = idToListedNFT[i + 1];
-                counter += 1;
-            }
-        }
+    function getNFTs() external view returns (uint256[] memory) {
         return listedNFTs;
     }
 

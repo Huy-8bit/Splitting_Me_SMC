@@ -25,8 +25,8 @@ const USDTData = fs.readFileSync(USDTFilePath);
 const USDTJSON = JSON.parse(USDTData);
 const USDTAddress = USDTJSON.address;
 
-const token1Address = "0x07958E8d0c48fcc19d5d40B13475F510F6158cC8";
-const addressPool = "0xE1a38447cf95aF32EE04cff428fCc34e9fa65B7D";
+const token1Address = "0xC6Eb37550fCe54A9744B7F154D2cBCc18C0C319E";
+const addressPool = "0xAb68b6c4144C9082c347E0377D88588dbC40a8B6";
 // Define variables for contract instances and owner
 let campaignPoolSwap;
 let factoryPool;
@@ -78,11 +78,11 @@ describe("Splitting Me", function () {
     //   // approve token
     //   const approve = await token.approve(
     //     campaignPoolSwap1.address,
-    //     ethers.utils.parseEther("100")
+    //     ethers.utils.parseEther("1000000")
     //   );
     //   const result = await campaignPoolSwap1.addPoolToken(
     //     token1Address,
-    //     ethers.utils.parseEther("100")
+    //     ethers.utils.parseEther("1000000")
     //   );
     //   console.log("result: ", result.hash);
     // });
@@ -95,7 +95,7 @@ describe("Splitting Me", function () {
     //   // approve usdt
     //   const approve = await usdt.approve(
     //     campaignPoolSwap1.address,
-    //     ethers.utils.parseEther("14670")
+    //     ethers.utils.parseEther("1000000")
     //   );
     //   console.log("approve: ", approve.hash);
     //   // delay 15s
@@ -103,7 +103,7 @@ describe("Splitting Me", function () {
     //   // add fram pool
     //   const result = await campaignPoolSwap1.FramPool(
     //     usdt.address,
-    //     ethers.utils.parseEther("14670")
+    //     ethers.utils.parseEther("1000000")
     //   );
     //   console.log("result: ", result.hash);
     // });
@@ -139,7 +139,7 @@ describe("Splitting Me", function () {
       // approve token
       const approve = await token.approve(
         campaignPoolSwap1.address,
-        ethers.utils.parseEther("100")
+        ethers.utils.parseEther("10")
       );
       console.log("approve: ", approve.hash);
       // delay 15s
@@ -148,7 +148,7 @@ describe("Splitting Me", function () {
       const result = await campaignPoolSwap1.swap(
         token1Address,
         usdt.address,
-        ethers.utils.parseEther("100")
+        ethers.utils.parseEther("10")
       );
       console.log("result: ", result.hash);
     });

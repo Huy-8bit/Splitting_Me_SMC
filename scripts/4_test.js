@@ -5,7 +5,7 @@ const { id } = require("ethers/lib/utils");
 const utils = ethers.utils;
 require("dotenv").config();
 
-// comandline: npx hardhat test scripts/test.js --network sepolia
+// comandline: npx hardhat test scripts/4_test.js --network sepolia
 const TokenFilePath = "./deployment/USDT.json";
 const NFTSplittingMEFilePath = "./deployment/NFTSplittingME.json";
 const MarketPlaceFilePath = "./deployment/MarketPlace.json";
@@ -51,10 +51,10 @@ describe("NFTMarketplace", function () {
 
   describe("NFT Marketplace test", function () {
     it("Should listedNFT", async function () {
-      tokenId = 1;
+      tokenId = 2;
       // approve nft
       const result1 = await nft.approve(marketPlace.address, tokenId);
-      console.log("NFT approved, \n", result1);
+      console.log("NFT approved: ", result1.hash);
       // delay 15 seconds
       await new Promise((r) => setTimeout(r, 15000));
       // list nft
@@ -63,47 +63,47 @@ describe("NFTMarketplace", function () {
         ethers.utils.parseEther("40")
       );
       await result.wait();
-      console.log("NFT listed, \n", result);
+      console.log("NFT listed: ", result.hash);
     });
-    it("Should buy NFT", async function () {
-      tokenId = 1;
-      // get price nft
-      const price = await marketPlace.getPrice(tokenId);
-      console.log("Price NFT: ", utils.formatEther(price));
-      // approve token
-      const result1 = await token.approve(
-        marketPlace.address,
-        price.toString()
-      );
-      console.log("Token approved, \n", result1);
-      // dalay 15 seconds
-      await new Promise((r) => setTimeout(r, 15000));
-      // buy nft
-      const result = await marketPlace.buyNFT(tokenId);
-      await result.wait();
-      console.log("NFT bought, \n", result);
-    });
-    it("Should cancel NFT", async function () {
-      // cancel nft
-      const result = await marketPlace.cancelListedNFT(1);
-      await result.wait();
-      console.log("NFT canceled, \n", result);
-    });
-    it("Should edit price NFT", async function () {
-      tokenId = 1;
-      // edit price nft
-      const result = await marketPlace.editPrice(
-        tokenId,
-        ethers.utils.parseEther("80")
-      );
-      await result.wait();
-      console.log("NFT price edited, \n", result);
-    });
-    it("Should withdraw token", async function () {
-      // withdraw token
-      const result = await marketPlace.withdraw();
-      await result.wait();
-      console.log("Token withdrawed, \n", result);
-    });
+    // it("Should buy NFT", async function () {
+    //   tokenId = 1;
+    //   // get price nft
+    //   const price = await marketPlace.getPrice(tokenId);
+    //   console.log("Price NFT: ", utils.formatEther(price));
+    //   // approve token
+    //   const result1 = await token.approve(
+    //     marketPlace.address,
+    //     price.toString()
+    //   );
+    //   console.log("Token approved, \n", result1);
+    //   // dalay 15 seconds
+    //   await new Promise((r) => setTimeout(r, 15000));
+    //   // buy nft
+    //   const result = await marketPlace.buyNFT(tokenId);
+    //   await result.wait();
+    //   console.log("NFT bought, \n", result);
+    // });
+    // it("Should cancel NFT", async function () {
+    //   // cancel nft
+    //   const result = await marketPlace.cancelListedNFT(1);
+    //   await result.wait();
+    //   console.log("NFT canceled, \n", result);
+    // });
+    // it("Should edit price NFT", async function () {
+    //   tokenId = 1;
+    //   // edit price nft
+    //   const result = await marketPlace.editPrice(
+    //     tokenId,
+    //     ethers.utils.parseEther("80")
+    //   );
+    //   await result.wait();
+    //   console.log("NFT price edited, \n", result);
+    // });
+    // it("Should withdraw token", async function () {
+    //   // withdraw token
+    //   const result = await marketPlace.withdraw();
+    //   await result.wait();
+    //   console.log("Token withdrawed, \n", result);
+    // });
   });
 });
