@@ -25,8 +25,8 @@ const USDTData = fs.readFileSync(USDTFilePath);
 const USDTJSON = JSON.parse(USDTData);
 const USDTAddress = USDTJSON.address;
 
-const token1Address = "0xC6Eb37550fCe54A9744B7F154D2cBCc18C0C319E";
-const addressPool = "0xAb68b6c4144C9082c347E0377D88588dbC40a8B6";
+const token1Address = "0x3eB621B817c8804ec4F9520Dc621eBe6ba078A66";
+const addressPool = "0x723f990aAf523A2C36B4db7B78640D173CF69C45";
 // Define variables for contract instances and owner
 let campaignPoolSwap;
 let factoryPool;
@@ -63,8 +63,8 @@ describe("Splitting Me", function () {
     //   const result = await factoryPool.createNewCampaign(
     //     usdt.address,
     //     token1Address,
-    //     3000,
-    //     20000
+    //     5000,
+    //     200000
     //   );
     //   console.log("result: ", result);
     // });
@@ -80,6 +80,9 @@ describe("Splitting Me", function () {
     //     campaignPoolSwap1.address,
     //     ethers.utils.parseEther("1000000")
     //   );
+    //   console.log("approve: ", approve.hash);
+    //   // delay 15s
+    //   await new Promise((r) => setTimeout(r, 15000));
     //   const result = await campaignPoolSwap1.addPoolToken(
     //     token1Address,
     //     ethers.utils.parseEther("1000000")
@@ -116,7 +119,7 @@ describe("Splitting Me", function () {
     //   // approve usdt
     //   const approve = await usdt.approve(
     //     campaignPoolSwap1.address,
-    //     ethers.utils.parseEther("1000")
+    //     ethers.utils.parseEther("0.001")
     //   );
     //   console.log("approve: ", approve.hash);
     //   // delay 15s
@@ -125,7 +128,7 @@ describe("Splitting Me", function () {
     //   const result = await campaignPoolSwap1.swap(
     //     usdt.address,
     //     token1Address,
-    //     ethers.utils.parseEther("1000")
+    //     ethers.utils.parseEther("0.001")
     //   );
     //   console.log("result: ", result.hash);
     // });
@@ -139,7 +142,7 @@ describe("Splitting Me", function () {
       // approve token
       const approve = await token.approve(
         campaignPoolSwap1.address,
-        ethers.utils.parseEther("10")
+        ethers.utils.parseEther("1000")
       );
       console.log("approve: ", approve.hash);
       // delay 15s
@@ -148,7 +151,7 @@ describe("Splitting Me", function () {
       const result = await campaignPoolSwap1.swap(
         token1Address,
         usdt.address,
-        ethers.utils.parseEther("10")
+        ethers.utils.parseEther("1000")
       );
       console.log("result: ", result.hash);
     });

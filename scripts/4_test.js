@@ -65,45 +65,45 @@ describe("NFTMarketplace", function () {
       await result.wait();
       console.log("NFT listed: ", result.hash);
     });
-    // it("Should buy NFT", async function () {
-    //   tokenId = 1;
-    //   // get price nft
-    //   const price = await marketPlace.getPrice(tokenId);
-    //   console.log("Price NFT: ", utils.formatEther(price));
-    //   // approve token
-    //   const result1 = await token.approve(
-    //     marketPlace.address,
-    //     price.toString()
-    //   );
-    //   console.log("Token approved, \n", result1);
-    //   // dalay 15 seconds
-    //   await new Promise((r) => setTimeout(r, 15000));
-    //   // buy nft
-    //   const result = await marketPlace.buyNFT(tokenId);
-    //   await result.wait();
-    //   console.log("NFT bought, \n", result);
-    // });
-    // it("Should cancel NFT", async function () {
-    //   // cancel nft
-    //   const result = await marketPlace.cancelListedNFT(1);
-    //   await result.wait();
-    //   console.log("NFT canceled, \n", result);
-    // });
-    // it("Should edit price NFT", async function () {
-    //   tokenId = 1;
-    //   // edit price nft
-    //   const result = await marketPlace.editPrice(
-    //     tokenId,
-    //     ethers.utils.parseEther("80")
-    //   );
-    //   await result.wait();
-    //   console.log("NFT price edited, \n", result);
-    // });
-    // it("Should withdraw token", async function () {
-    //   // withdraw token
-    //   const result = await marketPlace.withdraw();
-    //   await result.wait();
-    //   console.log("Token withdrawed, \n", result);
-    // });
+    it("Should buy NFT", async function () {
+      tokenId = 1;
+      // get price nft
+      const price = await marketPlace.getPrice(tokenId);
+      console.log("Price NFT: ", utils.formatEther(price));
+      // approve token
+      const result1 = await token.approve(
+        marketPlace.address,
+        price.toString()
+      );
+      console.log("Token approved, \n", result1);
+      // dalay 15 seconds
+      await new Promise((r) => setTimeout(r, 15000));
+      // buy nft
+      const result = await marketPlace.buyNFT(tokenId);
+      await result.wait();
+      console.log("NFT bought, \n", result);
+    });
+    it("Should cancel NFT", async function () {
+      // cancel nft
+      const result = await marketPlace.cancelListedNFT(1);
+      await result.wait();
+      console.log("NFT canceled, \n", result);
+    });
+    it("Should edit price NFT", async function () {
+      tokenId = 1;
+      // edit price nft
+      const result = await marketPlace.editPrice(
+        tokenId,
+        ethers.utils.parseEther("80")
+      );
+      await result.wait();
+      console.log("NFT price edited, \n", result);
+    });
+    it("Should withdraw token", async function () {
+      // withdraw token
+      const result = await marketPlace.withdraw();
+      await result.wait();
+      console.log("Token withdrawed, \n", result);
+    });
   });
 });
