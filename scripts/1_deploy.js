@@ -18,16 +18,16 @@ async function main() {
     utils.formatEther(await deployer.getBalance()).toString()
   );
 
-  // deploy USDT
-  const USDT = await ethers.getContractFactory("USDT");
-  const uSDT = await USDT.deploy();
-  await uSDT.deployed();
-  console.log("USDT address:", uSDT.address);
-  console.log("Token total supply:", (await uSDT.totalSupply()).toString());
+  // // deploy USDT
+  // const USDT = await ethers.getContractFactory("USDT");
+  // const uSDT = await USDT.deploy();
+  // await uSDT.deployed();
+  // console.log("USDT address:", "0x55d398326f99059fF775485246999027B3197955");
+  // console.log("Token total supply:", (await uSDT.totalSupply()).toString());
 
   const USDTData = {
     name: "USDT Token",
-    address: uSDT.address,
+    address: "0x55d398326f99059fF775485246999027B3197955",
   };
   const USDTTokenJsonData = JSON.stringify(USDTData, null, 2);
   fs.writeFileSync("./deployment/USDT.json", USDTTokenJsonData);
@@ -51,7 +51,7 @@ async function main() {
   const TokenSale = await ethers.getContractFactory("TokenSale"); // Replace with your actual TokenSale contract name
   const tokenSaleContract = await TokenSale.deploy(
     rwaContract.address,
-    uSDT.address
+    "0x55d398326f99059fF775485246999027B3197955"
   );
   await tokenSaleContract.deployed();
   console.log("TokenSale Contract address:", tokenSaleContract.address);

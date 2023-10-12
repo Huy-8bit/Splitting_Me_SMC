@@ -18,21 +18,19 @@ contract TokenSale is Ownable {
         Gold
     }
     struct Package {
-        uint256 priceUsdt; // Giá của gói trong USDT
+        uint256 priceUsdt;
         uint256 tokens;
     }
 
     mapping(Rank => Package) public packages;
-    mapping(address => address) public referrals;
-    mapping(address => uint256) public userLevels;
 
     constructor(address _tokenAddress, address _usdtAddress) {
         token = IERC20(_tokenAddress);
         usdt = IERC20(_usdtAddress);
-        packages[Rank.Basic] = Package(1000 * 10 ** 18, 10000 * 10 ** 18); // 1000 USDT, 10,000 tokens
-        packages[Rank.Bronze] = Package(10000 * 10 ** 18, 100000 * 10 ** 18); // 10,000 USDT, 100,000 tokens
-        packages[Rank.Silver] = Package(20000 * 10 ** 18, 200000 * 10 ** 18); // 20,000 USDT, 200,000 tokens
-        packages[Rank.Gold] = Package(45000 * 10 ** 18, 450000 * 10 ** 18); // 45,000 USDT, 450,000 tokens
+        packages[Rank.Basic] = Package(100 * 10 ** 18, 10000 * 10 ** 18); // 1000 USDT, 10,000 tokens
+        packages[Rank.Bronze] = Package(1000 * 10 ** 18, 100000 * 10 ** 18); // 10,000 USDT, 100,000 tokens
+        packages[Rank.Silver] = Package(2000 * 10 ** 18, 200000 * 10 ** 18); // 20,000 USDT, 200,000 tokens
+        packages[Rank.Gold] = Package(4500 * 10 ** 18, 450000 * 10 ** 18); // 45,000 USDT, 450,000 tokens
     }
 
     function buyPackage(uint256 _packageName, uint _usdtSend) external {

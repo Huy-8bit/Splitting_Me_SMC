@@ -22,7 +22,7 @@ const REAL_ACCOUNTS = (module.exports = {
       accounts: [process.env.REAL_ACCOUNTS],
     },
     bnb: {
-      url: `https://bsc-testnet.publicnode.com`,
+      url: `wss://bsc.publicnode.com`,
       accounts: [process.env.REAL_ACCOUNTS],
     },
   },
